@@ -22,7 +22,9 @@ for i in range(len(vector)):
 
 print(xcoord)
 print(ycoord)
-#fig = plt.figure()
-#ax =  fig.add_subplot(111)
-#ax.plot(xcoord,ycoord)
-#plt.show()
+
+
+fig = plt.figure()
+ax =  fig.add_subplot(111)
+ax.scatter(xcoord,ycoord)
+plt.show()
