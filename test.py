@@ -3,17 +3,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-with open('bristolcycle.geojson') as f:
-    data = json.load(f)
-
-ways = []
+def get_coords(data):
+    ways = []
 
 
-for feature in data['features']:
-    vector = feature['geometry']['coordinates']
-    ways.append(vector)
+    for feature in data['features']:
+        vector = feature['geometry']['coordinates']
+        ways.append(vector)
+    return ways
 
-print(len(ways))
+
+
+
+
+
+if __name__ == '__main__':
+
+    with open('bristolcycle.geojson') as f:
+        data = json.load(f)
+
+    ways = get_coords(data)
+    
+
+
 
 
 #distance between latlong
