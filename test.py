@@ -1,16 +1,37 @@
 import json
 import numpy as np
 import matplotlib.pyplot as plt
+import shapely
+from shapely.geometry import Point, Polygon, LineString, GeometryCollection
+import pandas as pd
 
 
-def get_coords(data):
-    ways = []
-
-
+def get_junctions(data):
+    #finding junctions between cycle paths to build a network
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    nodes = []
     for feature in data['features']:
         vector = feature['geometry']['coordinates']
-        ways.append(vector)
-    return ways
+        if all(isinstance(x, list) for x in vector):
+
+            newvec = [tuple(l) for l in vector]
+
+        else:
+
+            newvec = tuple(vector)
+
+        ln = LineString(newvec)
+
+    print(vector)
+    print(newvec)
+
+
+        #ls = LineString(vector)
+    print(len(nodes))
+
+    return 0
+
 
 
 
@@ -22,8 +43,8 @@ if __name__ == '__main__':
     with open('bristolcycle.geojson') as f:
         data = json.load(f)
 
-    ways = get_coords(data)
-    
+    get_junctions(data)
+
 
 
 
