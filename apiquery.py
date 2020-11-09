@@ -1,25 +1,9 @@
-import requests
-import json
-overpass_url = "http://overpass-api.de/api/interpreter"
-overpass_query = """
-/*
-This shows the cycleway and cycleroute network.
-*/
-
-[out:json];
-
-(
-  // get cycle route relations
-  relation[route=bicycle](51.33533076546221,-2.7029800415039062,51.60650393311422,-2.4619674682617188);
-  // get cycleways
-  way[highway=cycleway](51.33533076546221,-2.7029800415039062,51.60650393311422,-2.4619674682617188);
-  way[highway=path][bicycle=designated](51.33533076546221,-2.7029800415039062,51.60650393311422,-2.4619674682617188);
-);
-
-out body;
->;
-out skel qt;
-"""
-response = requests.get(overpass_url,
-                        params={'data': overpass_query})
-data = response.json()
+import osmnx as ox
+useful_tags = ox.settings.useful_tags_way + ['cycleway']
+ox.config(use_cache=True, log_console=True, useful_tags_way=useful_tags)
+G = ox.graph_from_place(query = 'Bristol, England', network_type='bike', simplify=False)
+non_cycleways = [(u, v, k) for u, v, k, d in G.edges(keys=True, data=True) if not ('cycleway' in d or d['highway']=='cycleway')]
+G.remove_edges_from(non_cycleways)
+G = ox.utils_graph.remove_isolated_nodes(G)
+G = ox.simplify_graph(G)
+fig, ax = ox.plot_graph(G)

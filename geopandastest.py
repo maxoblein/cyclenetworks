@@ -17,7 +17,7 @@ ox.plot_graph(G_projected)
 '''
 
 
-useful_tags = ox.settings.useful_tags_way + ['cycleway'] + ['bicycle']
+useful_tags = ox.settings.useful_tags_way + ['cycleway'] + ['bicycle'] + ['route']
 ox.utils.config(use_cache=True, log_console=True, useful_tags_way=useful_tags)
 G = ox.graph_from_place(query = 'Bristol, England', network_type='bike', simplify=False,  retain_all=True)
 
@@ -30,6 +30,11 @@ for u,v,k,d in G.edges(keys=True, data=True):
 
     if d['highway']=='cycleway':
         pass
+
+    if d['route'] == 'bicycle':
+        bi = True
+        
+
     elif 'cycleway' in d:
         pass
     elif bi:
@@ -38,12 +43,17 @@ for u,v,k,d in G.edges(keys=True, data=True):
         non_cyc.append((u,v,k))
 
 G.remove_edges_from(non_cyc)
+#
 G = ox.utils_graph.remove_isolated_nodes(G)
 G = ox.simplify_graph(G)
 stats = ox.stats.basic_stats(G)
-fig, ax = ox.plot_graph(G)
+#fig, ax = ox.plot_graph(G)
+print(stats)
+gdf = ox.graph_to_gdfs(G, nodes=False)
+for v in gdf['name']:
+    print(v)
 
 
 
 #561023044
-#177586115
+#177586115s
