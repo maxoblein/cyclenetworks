@@ -31,9 +31,6 @@ for u,v,k,d in G.edges(keys=True, data=True):
     if d['highway']=='cycleway':
         pass
 
-    if d['route'] == 'bicycle':
-        bi = True
-        
 
     elif 'cycleway' in d:
         pass
@@ -50,8 +47,7 @@ stats = ox.stats.basic_stats(G)
 #fig, ax = ox.plot_graph(G)
 print(stats)
 gdf = ox.graph_to_gdfs(G, nodes=False)
-for v in gdf['name']:
-    print(v)
+ox.io.save_graphml(G, filepath='Cyclenetwork', gephi=False, encoding='utf-8')
 
 
 
