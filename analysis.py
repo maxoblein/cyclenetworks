@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import osmnx as ox
 import networkx as nx
 from networkx.linalg.graphmatrix import adjacency_matrix
+import matplotlib.patches as mpatches
 
 
 def init_graph(filepath):
@@ -35,23 +36,28 @@ def random_shortest_path(G):
     ec = colour_edges(G)
 
     edgelist = list(G.edges)
+    l = []
     for e in pathedges:
         index = edgelist.index((e[0],e[1],0))
 
         if ec[index] == 'r':
             ec[index] = 0
             ec[index] = 'b'
+            l.append(1)
         if ec[index] == 'w':
             ec[index] = 0
             ec[index] = 'g'
+            l.append(0)
 
 
 
 
 
+    pct_cycle = (sum(l)/len(l))*100
+    
 
 
-    return path , ec
+    return path , ec, pct_cycle
 
 
 def find_missing_links():
@@ -98,12 +104,21 @@ if __name__ == '__main__':
 
 
     ec = colour_edges(all[0])
-    #fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7)
+    fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
+    ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
+
+
+
+    red_patch = mpatches.Patch(color='red', label='Roads with cycle paths')
+
+    ax.legend(handles=[red_patch])
+
+    plt.show()
     #print(list(all[0].edges)[1])
 
-    path, ecpath = random_shortest_path(all[0])
+    #path, ecpath, pct_cycle = random_shortest_path(all[0])
     #print(path)
-    fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ecpath, edge_linewidth=1.5, edge_alpha=0.7)
+    #fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ecpath, edge_linewidth=1.5, edge_alpha=0.7)
 
 
 

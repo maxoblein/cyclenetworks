@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import osmnx as ox
 
-
+'''
 useful_tags = ox.settings.useful_tags_way + ['cycleway'] + ['bicycle'] + ['route']
 ox.utils.config(use_cache=True, log_console=True, useful_tags_way=useful_tags)
 G = ox.graph_from_place(query = 'Bristol, England', network_type='bike', simplify=False,  retain_all=True)
@@ -37,11 +37,21 @@ stats = ox.stats.basic_stats(G)
 #fig, ax = ox.plot_graph(G)
 print(stats)
 gdf = ox.graph_to_gdfs(G, nodes=False)
+'''
 
-G_all = ox.graph_from_place(query = 'Bristol, England', network_type='all')
+G_all = ox.graph_from_place(query = 'Bristol, England', network_type='bike')
 #fig, ax = ox.plot_graph(G_all)
 
 ox.io.save_graphml(G_all, filepath='Graphall', gephi=False, encoding='utf-8')
+
+
+
+
+fig, ax = ox.plot_graph(G_all,node_size = 5,show=False)
+
+ax.set_title('Graph of Road network of bristol that can be cycled on', fontsize= 18)
+
+plt.show()
 
 
 
