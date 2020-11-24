@@ -54,7 +54,7 @@ def random_shortest_path(G):
 
 
     pct_cycle = (sum(l)/len(l))*100
-    
+
 
 
     return path , ec, pct_cycle
@@ -86,7 +86,30 @@ def colour_edges(G):
 
     return ec
 
+def adjust_weights(G):
+    edge_index = []
+    node_list = list(G.nodes)
+    #identify index of non cycle lanes
+    for u,v,k,d in G.edges(keys=True, data=True):
+        bi = False
+        if "bicycle" in d: #kind of uggly but not every edge has the bicycle tag
+            if d['bicycle']=='designated':
+                bi = True
 
+        if d['highway']=='cycleway':
+            pass
+
+
+        elif 'cycleway' in d:
+            pass
+        elif bi:
+            pass
+        else:
+            d['length'] = d['length'] * 2
+
+
+
+    return G
 
 
 
@@ -104,6 +127,13 @@ if __name__ == '__main__':
 
 
     ec = colour_edges(all[0])
+
+
+    G_adj = adjust_weights(all[0])
+
+
+    '''
+    #for plotting highlighted graph
     fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
     ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
 
@@ -114,23 +144,10 @@ if __name__ == '__main__':
     ax.legend(handles=[red_patch])
 
     plt.show()
+
+    '''
     #print(list(all[0].edges)[1])
 
     #path, ecpath, pct_cycle = random_shortest_path(all[0])
     #print(path)
     #fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ecpath, edge_linewidth=1.5, edge_alpha=0.7)
-
-
-
-
-
-
-
-'''
-    for u,v,k in G.edges(keys=True, data=False):
-        if (u==e[0] and v==e[1]):
-            if ec[counter] == 'r':
-                ec[counter] = 'g'
-            if ec[counter] == 'w':
-                ec[counter] = 'g'
-'''

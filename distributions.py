@@ -2,11 +2,12 @@ from analysis import *
 
 network = init_graph('Graphall')
 
+adjusted_network = adjust_weights(network[0])
 
 d =[]
 for i in range(500):
 
-    path, ecpath, pct_cycle = random_shortest_path(network[0])
+    path, ecpath, pct_cycle = random_shortest_path(adjusted_network)
     d.append(pct_cycle)
     print(pct_cycle)
 
