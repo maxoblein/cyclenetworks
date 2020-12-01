@@ -25,39 +25,48 @@ def random_shortest_path(G):
     nodes = list(nodes)
     #print(nodes)
     ODpair = np.random.choice(nodes,2)
-    path = ox.shortest_path(G,ODpair[0],ODpair[1])
 
-    pathedges = []
-    for i in range(len(path)-1):
-        pathedges.append([path[i],path[i+1]])
+    if nx.has_path(G,ODpair[0],ODpair[1]):
+        path = ox.shortest_path(G,ODpair[0],ODpair[1])
 
-    #print(pathedges)
+        pathedges = []
+        for i in range(len(path)-1):
+            pathedges.append([path[i],path[i+1]])
 
-    ec = colour_edges(G)
+        #print(pathedges)
 
-    edgelist = list(G.edges)
-    l = []
-    for e in pathedges:
-        index = edgelist.index((e[0],e[1],0))
+        ec = colour_edges(G)
 
-        if ec[index] == 'r':
-            ec[index] = 0
-            ec[index] = 'b'
-            l.append(1)
-        if ec[index] == 'w':
-            ec[index] = 0
-            ec[index] = 'g'
-            l.append(0)
+        edgelist = list(G.edges)
+        l = []
+        for e in pathedges:
+            index = edgelist.index((e[0],e[1],0))
 
-
-
-
-
-    pct_cycle = (sum(l)/len(l))*100
+            if ec[index] == 'r':
+                ec[index] = 0
+                ec[index] = 'b'
+                l.append(1)
+            if ec[index] == 'w':
+                ec[index] = 0
+                ec[index] = 'g'
+                l.append(0)
 
 
 
-    return path , ec, pct_cycle
+
+
+        pct_cycle = (sum(l)/len(l))*100
+        length = nx.shortest_path_length(G,ODpair[0],ODpair[1])
+
+
+
+    else:
+        path = [0]
+        ec = colour_edges(G)
+        pct_cycle = 0
+        length = 0
+
+    return path , ec, pct_cycle,length
 
 
 def find_missing_links():
@@ -86,7 +95,7 @@ def colour_edges(G):
 
     return ec
 
-def adjust_weights(G):
+def adjust_weights(G,c):
     edge_index = []
     node_list = list(G.nodes)
     #identify index of non cycle lanes
@@ -105,7 +114,7 @@ def adjust_weights(G):
         elif bi:
             pass
         else:
-            d['length'] = d['length'] * 2
+            d['length'] = d['length'] * c
 
 
 
@@ -129,10 +138,10 @@ if __name__ == '__main__':
     ec = colour_edges(all[0])
 
 
-    G_adj = adjust_weights(all[0])
+    G_adj = adjust_weights(all[0],1)
 
 
-    '''
+
     #for plotting highlighted graph
     fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
     ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
@@ -145,7 +154,7 @@ if __name__ == '__main__':
 
     plt.show()
 
-    '''
+
     #print(list(all[0].edges)[1])
 
     #path, ecpath, pct_cycle = random_shortest_path(all[0])
