@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import osmnx as ox
 import networkx as nx
 from networkx.linalg.graphmatrix import adjacency_matrix
+import matplotlib
 import matplotlib.patches as mpatches
 
 
@@ -19,12 +20,11 @@ def init_graph(filepath):
     return [Gp, nodes, edges, Ag]
 
 
-def random_shortest_path(G):
+def random_shortest_path(G,ODoption = 'random'):
 
-    nodes = G.nodes
-    nodes = list(nodes)
+
     #print(nodes)
-    ODpair = np.random.choice(nodes,2)
+    ODpair = getOD(G,ODoption)
 
     if nx.has_path(G,ODpair[0],ODpair[1]):
         path = ox.shortest_path(G,ODpair[0],ODpair[1])
@@ -57,6 +57,7 @@ def random_shortest_path(G):
 
         pct_cycle = (sum(l)/len(l))*100
         length = nx.shortest_path_length(G,ODpair[0],ODpair[1])
+    
 
 
 
@@ -67,6 +68,21 @@ def random_shortest_path(G):
         length = 0
 
     return path , ec, pct_cycle,length
+
+
+def getOD(G,ODoption):
+    if ODoption == 'random':
+        nodes = G.nodes
+        nodes = list(nodes)
+        #print(nodes)
+        ODpair = np.random.choice(nodes,2)
+
+    else:
+        print('invalid ODoption')
+        ODpair = [-1,-1]
+
+    return ODpair
+
 
 
 def find_missing_links():
@@ -128,8 +144,8 @@ def adjust_weights(G,c):
 
 
 if __name__ == '__main__':
-    cycle = init_graph('Cyclenetwork')
-    all = init_graph('Graphall')
+
+    all = init_graph('Graphdam')
 
 
 
@@ -144,13 +160,13 @@ if __name__ == '__main__':
 
     #for plotting highlighted graph
     fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
-    ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
-
-
-
-    red_patch = mpatches.Patch(color='red', label='Roads with cycle paths')
-
-    ax.legend(handles=[red_patch])
+    # ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
+    #
+    #
+    #
+    # red_patch = mpatches.Patch(color='red', label='Roads with cycle paths')
+    #
+    # ax.legend(handles=[red_patch])
 
     plt.show()
 
