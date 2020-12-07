@@ -20,11 +20,11 @@ def init_graph(filepath):
     return [Gp, nodes, edges, Ag]
 
 
-def random_shortest_path(G,ODoption = 'random'):
+def random_shortest_path(G,ODoption = 'random',Gbbox = None):
 
 
     #print(nodes)
-    ODpair = getOD(G,ODoption)
+    ODpair = getOD(G,ODoption,Gbbox)
 
     if nx.has_path(G,ODpair[0],ODpair[1]):
         path = ox.shortest_path(G,ODpair[0],ODpair[1])
@@ -57,7 +57,7 @@ def random_shortest_path(G,ODoption = 'random'):
 
         pct_cycle = (sum(l)/len(l))*100
         length = nx.shortest_path_length(G,ODpair[0],ODpair[1])
-    
+
 
 
 
@@ -70,16 +70,30 @@ def random_shortest_path(G,ODoption = 'random'):
     return path , ec, pct_cycle,length
 
 
-def getOD(G,ODoption):
+def getOD(G,ODoption,Gbbox):
     if ODoption == 'random':
         nodes = G.nodes
         nodes = list(nodes)
         #print(nodes)
         ODpair = np.random.choice(nodes,2)
 
+    if ODoption == 'centre':
+        ODpair = commute_to_bbox(G,Gbbox)
+        print(ODpair)
+
     else:
         print('invalid ODoption')
         ODpair = [-1,-1]
+
+    return ODpair
+
+def commute_to_bbox(G,Gbbox):
+    allnodes = list(G.nodes)
+    bboxnodes=list(Gbbox.nodes)
+    origins  = [x for x in allnodes if x not in bboxnodes]
+    destinations = bboxnodes
+
+    ODpair = [np.random.choice(origins,1)[0],  np.random.choice(destinations,1)[0]]
 
     return ODpair
 
@@ -145,7 +159,8 @@ def adjust_weights(G,c):
 
 if __name__ == '__main__':
 
-    all = init_graph('Graphdam')
+    all = init_graph('Graphall')
+    centre = init_graph('Graphbriscentre')
 
 
 
@@ -159,7 +174,7 @@ if __name__ == '__main__':
 
 
     #for plotting highlighted graph
-    fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
+    #fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
     # ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
     #
     #
@@ -168,11 +183,11 @@ if __name__ == '__main__':
     #
     # ax.legend(handles=[red_patch])
 
-    plt.show()
+    #plt.show()
 
 
     #print(list(all[0].edges)[1])
 
-    #path, ecpath, pct_cycle = random_shortest_path(all[0])
-    #print(path)
-    #fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ecpath, edge_linewidth=1.5, edge_alpha=0.7)
+    path, ecpath, pct_cycle,length = random_shortest_path(G_adj,ODoption = 'centre',Gbbox = centre[0])
+    print(path)
+    fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ecpath, edge_linewidth=1.5, edge_alpha=0.7)

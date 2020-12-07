@@ -40,19 +40,25 @@ print(stats)
 gdf = ox.graph_to_gdfs(G, nodes=False)
 '''
 
-G_all = ox.graph_from_place(query = 'Amsterdam', network_type='bike')
+#G_all = ox.graph_from_place(query = 'Amsterdam', network_type='bike')
 #fig, ax = ox.plot_graph(G_all)
+ox.utils.config(use_cache=True, log_console=True)
 
-ox.io.save_graphml(G_all, filepath='Graphdam', gephi=False, encoding='utf-8')
+bbox = (51.44892557475275,-2.605905532836914,51.45999681055089,-2.5842761993408203)
 
+# define a bounding box in San Francisco
+north, south, east, west = 51.45999681055089, 51.44892557475275, -2.605905532836914, -2.5842761993408203
 
+# create network from that bounding box
+G1 = ox.graph_from_bbox(north, south, east, west, network_type='bike')
 
+ox.io.save_graphml(G1, filepath='Graphbriscentre', gephi=False, encoding='utf-8')
 
-fig, ax = ox.plot_graph(G_all,node_size = 5,show=False)
-
-
-
-plt.savefig('lpic_figs/dam_network.pdf')
+# fig, ax = ox.plot_graph(G_all,node_size = 5,show=False)
+#
+#
+#
+# plt.savefig('lpic_figs/dam_network.pdf')
 
 
 
