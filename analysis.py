@@ -8,7 +8,7 @@ import networkx as nx
 from networkx.linalg.graphmatrix import adjacency_matrix
 import matplotlib
 import matplotlib.patches as mpatches
-
+from commutedata import *
 
 def init_graph(filepath):
     G = ox.io.load_graphml(filepath)
@@ -80,6 +80,10 @@ def getOD(G,ODoption,Gbbox):
     if ODoption == 'centre':
         ODpair = commute_to_bbox(G,Gbbox)
         print(ODpair)
+
+    if ODoption == 'lsoa':
+        ids, centroids, normed_matrix = initialiselsoa()
+        ODpair = lsoapair(G, ids, centroids, normed_matrix)
 
     else:
         print('invalid ODoption')
@@ -155,6 +159,24 @@ def adjust_weights(G,c):
     #ec = ['r' if data['highway'] == 'cycleway' elif data['bicycle'] == 'designated' else 'w' for u, v, key, data in all[0].edges(keys=True, data=True)]
     #fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7)
 
+def lsoapair(G,ids,centroids,m):
+    originlsoa = np.random.choice(ids,1)
+    indexorigin = ids.index(originlsoa)
+    origincoords = centroids[indexorigin]
+    flowprob = m[indexorigin]
+    destinationlsoa = np.random.choice(ids,1,list(flowprob))
+    indexdestination = ids.index(destinationlsoa)
+    destinationcoords = centroids[indexdestination]
+    print('O = ' , ids[indexorigin])
+    print('D = ' , ids[indexdestination])
+    nodeorigin = ox.get_nearest_node(G, origincoords, method='haversine', return_dist=False)
+    nodedestination = ox.get_nearest_node(G, destinationcoords, method='haversine', return_dist=False)
+
+    print(nodeorigin)
+    print(nodedestination)
+    ODpair = [nodeorigin,nodedestination]
+
+    return ODpair
 
 
 if __name__ == '__main__':
@@ -188,6 +210,6 @@ if __name__ == '__main__':
 
     #print(list(all[0].edges)[1])
 
-    path, ecpath, pct_cycle,length = random_shortest_path(G_adj,ODoption = 'centre',Gbbox = centre[0])
+    path, ecpath, pct_cycle,length = random_shortest_path(G_adj,ODoption = 'lsoa',Gbbox = centre[0])
     print(path)
     fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ecpath, edge_linewidth=1.5, edge_alpha=0.7)
