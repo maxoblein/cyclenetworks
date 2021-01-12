@@ -3,10 +3,10 @@ from analysis import *
 #ox.utils.config(use_cache=True, log_console=True)
 
 
-network = init_graph('Graphall')
-centrenet = init_graph('Graphbriscentre')
+network = ox.io.load_graphml('Graphall')
+centrenet = ox.io.load_graphml('Graphbriscentre')
 
-adjusted_network = adjust_weights(network[0],25)
+adjusted_network = adjust_weights(network,25)
 
 
 
@@ -15,7 +15,7 @@ d =[]
 l = []
 for i in range(700):
 
-    path, ecpath, pct_cycle, length = random_shortest_path(adjusted_network,ODoption = 'centre',Gbbox = centrenet[0])
+    path, ecpath, pct_cycle, length = random_shortest_path(adjusted_network,ODoption = 'lsoa')
 
     if len(path) > 50:
         d.append(pct_cycle)
@@ -30,7 +30,7 @@ ax1 = fig1.add_subplot(111)
 ax1.hist(d,bins=25)
 
 
-plt.savefig('lpic_figs/uni_hist_bris_centre_o25.pdf')
+plt.savefig('lpic_figs/uni_hist_bris_lsoa_o25.pdf')
 '''
 fig2 = plt.figure()
 ax2 = fig2.add_subplot(111)

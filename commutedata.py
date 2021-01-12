@@ -34,18 +34,21 @@ def initialiselsoa():
     #have ids and their centroid coordinates which index at the same position as matrix
 
     m  = np.genfromtxt('flowmatrix.csv', delimiter=',')
-    m[0][0] = 15
-    print(np.shape(m))
-    print(len(ids))
-    s =0
-    for j in range(263):
-        s = s + m[0][j]
 
-    print(15/s)
+    #remove in lsoa movement
+
+    for i in range(m.shape[0]):
+        m[i][i] = 0
+
 
     normed_matrix = normalize(m, axis=1, norm='l1')
 
+    s = 0
+    for j in range(normed_matrix.shape[0]):
+        s = s + normed_matrix[0][j]
+
     print(normed_matrix)
+    print('sum =',s )
 
     return ids, centroids, normed_matrix
 

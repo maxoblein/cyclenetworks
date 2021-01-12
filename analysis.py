@@ -162,18 +162,22 @@ def adjust_weights(G,c):
 def lsoapair(G,ids,centroids,m):
     originlsoa = np.random.choice(ids,1)
     indexorigin = ids.index(originlsoa)
-    origincoords = centroids[indexorigin]
+    origincoords = centroids[indexorigin][::-1]
     flowprob = m[indexorigin]
+    print(flowprob)
     destinationlsoa = np.random.choice(ids,1,list(flowprob))
     indexdestination = ids.index(destinationlsoa)
-    destinationcoords = centroids[indexdestination]
+    destinationcoords = centroids[indexdestination][::-1]
     print('O = ' , ids[indexorigin])
     print('D = ' , ids[indexdestination])
+    print('O = ' , origincoords)
+    print('D = ' , destinationcoords)
     nodeorigin = ox.get_nearest_node(G, origincoords, method='haversine', return_dist=False)
     nodedestination = ox.get_nearest_node(G, destinationcoords, method='haversine', return_dist=False)
 
     print(nodeorigin)
-    print(nodedestination)
+    print(G.nodes[nodeorigin])
+    print(G.nodes[nodedestination])
     ODpair = [nodeorigin,nodedestination]
 
     return ODpair
@@ -181,17 +185,17 @@ def lsoapair(G,ids,centroids,m):
 
 if __name__ == '__main__':
 
-    all = init_graph('Graphall')
-    centre = init_graph('Graphbriscentre')
+    Gall = ox.io.load_graphml('Graphall')
+    centre = ox.io.load_graphml('Graphbriscentre')
 
 
 
 
 
-    ec = colour_edges(all[0])
+    ec = colour_edges(Gall)
 
 
-    G_adj = adjust_weights(all[0],1)
+    G_adj = adjust_weights(Gall,1)
 
 
 
@@ -210,6 +214,6 @@ if __name__ == '__main__':
 
     #print(list(all[0].edges)[1])
 
-    path, ecpath, pct_cycle,length = random_shortest_path(G_adj,ODoption = 'lsoa',Gbbox = centre[0])
+    path, ecpath, pct_cycle,length = random_shortest_path(G_adj,ODoption = 'lsoa',Gbbox = centre)
     print(path)
-    fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ecpath, edge_linewidth=1.5, edge_alpha=0.7)
+    #fig, ax = ox.plot_graph(Gall, node_size=0, edge_color=ecpath, edge_linewidth=1.5, edge_alpha=0.7)
