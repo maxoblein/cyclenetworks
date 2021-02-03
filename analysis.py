@@ -164,20 +164,15 @@ def lsoapair(G,ids,centroids,m):
     indexorigin = ids.index(originlsoa)
     origincoords = centroids[indexorigin][::-1]
     flowprob = m[indexorigin]
-    print(flowprob)
+
     destinationlsoa = np.random.choice(ids,1,list(flowprob))
     indexdestination = ids.index(destinationlsoa)
     destinationcoords = centroids[indexdestination][::-1]
-    print('O = ' , ids[indexorigin])
-    print('D = ' , ids[indexdestination])
-    print('O = ' , origincoords)
-    print('D = ' , destinationcoords)
+
     nodeorigin = ox.get_nearest_node(G, origincoords, method='haversine', return_dist=False)
     nodedestination = ox.get_nearest_node(G, destinationcoords, method='haversine', return_dist=False)
 
-    print(nodeorigin)
-    print(G.nodes[nodeorigin])
-    print(G.nodes[nodedestination])
+    
     ODpair = [nodeorigin,nodedestination]
 
     return ODpair

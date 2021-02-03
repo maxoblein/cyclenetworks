@@ -47,8 +47,7 @@ def initialiselsoa():
     for j in range(normed_matrix.shape[0]):
         s = s + normed_matrix[0][j]
 
-    print(normed_matrix)
-    print('sum =',s )
+    
 
     return ids, centroids, normed_matrix
 
