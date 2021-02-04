@@ -9,6 +9,7 @@ from networkx.linalg.graphmatrix import adjacency_matrix
 import matplotlib
 import matplotlib.patches as mpatches
 from commutedata import *
+import sys
 
 def init_graph(filepath):
     G = ox.io.load_graphml(filepath)
@@ -54,8 +55,11 @@ def random_shortest_path(G,ODoption = 'random',Gbbox = None):
 
 
 
+        if len(l) == 0:
+            pct_cycle = 0
+        else:
+            pct_cycle = (sum(l)/len(l))*100
 
-        pct_cycle = (sum(l)/len(l))*100
         length = nx.shortest_path_length(G,ODpair[0],ODpair[1])
 
 
@@ -172,7 +176,7 @@ def lsoapair(G,ids,centroids,m):
     nodeorigin = ox.get_nearest_node(G, origincoords, method='haversine', return_dist=False)
     nodedestination = ox.get_nearest_node(G, destinationcoords, method='haversine', return_dist=False)
 
-    
+
     ODpair = [nodeorigin,nodedestination]
 
     return ODpair
