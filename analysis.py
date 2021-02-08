@@ -136,6 +136,7 @@ def colour_edges(G):
 def adjust_weights(G,c):
     edge_index = []
     node_list = list(G.nodes)
+    cycmat = np.zeros((len(node_list),len(node_list)))
     #identify index of non cycle lanes
     for u,v,k,d in G.edges(keys=True, data=True):
         bi = False
@@ -144,19 +145,19 @@ def adjust_weights(G,c):
                 bi = True
 
         if d['highway']=='cycleway':
-            pass
+            cycmat[node_list.index(u)][node_list.index(v)] = 1
 
 
         elif 'cycleway' in d:
-            pass
+            cycmat[node_list.index(u)][node_list.index(v)] = 1
         elif bi:
-            pass
+            cycmat[node_list.index(u)][node_list.index(v)] = 1
         else:
             d['length'] = d['length'] * c
 
 
 
-    return G
+    return G, cycmat
 
 
 
