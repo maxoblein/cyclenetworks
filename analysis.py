@@ -21,11 +21,11 @@ def init_graph(filepath):
     return [Gp, nodes, edges, Ag]
 
 
-def random_shortest_path(G,ODoption = 'random',Gbbox = None):
-
+def random_shortest_path(G,ODoption = 'random',Gbbox = None,ids = 0,centroids = 0,normed_matrix = 0):
+    #Find a shortest path using a prescribed demaand model.
 
     #print(nodes)
-    ODpair = getOD(G,ODoption,Gbbox)
+    ODpair = getOD(G,ODoption,Gbbox, ids=ids, centroids=centroids, normed_matrix=normed_matrix)
 
     if nx.has_path(G,ODpair[0],ODpair[1]):
         path = ox.shortest_path(G,ODpair[0],ODpair[1])
@@ -74,7 +74,8 @@ def random_shortest_path(G,ODoption = 'random',Gbbox = None):
     return path , ec, pct_cycle,length
 
 
-def getOD(G,ODoption,Gbbox):
+def getOD(G,ODoption,Gbbox,ids = 0,centroids = 0,normed_matrix = 0):
+    # gets the od pair of the prescribed demand model
     if ODoption == 'random':
         nodes = G.nodes
         nodes = list(nodes)
@@ -86,7 +87,6 @@ def getOD(G,ODoption,Gbbox):
         print(ODpair)
 
     if ODoption == 'lsoa':
-        ids, centroids, normed_matrix = initialiselsoa()
         ODpair = lsoapair(G, ids, centroids, normed_matrix)
 
     else:
@@ -105,11 +105,6 @@ def commute_to_bbox(G,Gbbox):
 
     return ODpair
 
-
-
-def find_missing_links():
-
-    return 0
 
 def colour_edges(G):
     ec = []

@@ -15,7 +15,7 @@ d =[]
 l = []
 for i in range(700):
 
-    path, ecpath, pct_cycle, length = random_shortest_path(adjusted_network,ODoption = 'lsoa')
+    path, ecpath, pct_cycle, length = random_shortest_path(adjusted_network,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix)
 
     if len(path) > 50:
         d.append(pct_cycle)
