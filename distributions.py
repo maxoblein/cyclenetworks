@@ -1,43 +1,57 @@
 from analysis import *
-
+from commutedata import *
 #ox.utils.config(use_cache=True, log_console=True)
 
+network_pre = ox.io.load_graphml('Graphall')
+network_post = ox.io.load_graphml('Graphpostupgrade_500_20_100')
+#centrenet = ox.io.load_graphml('Graphbriscentre')
+ids, centroids, normed_matrix = initialiselsoa()
+G_adj_pre,cycmat = adjust_weights(network_pre,25)
+G_adj_post, cycmat = adjust_weights(network_post,25)
 
-network = ox.io.load_graphml('Graphall')
-centrenet = ox.io.load_graphml('Graphbriscentre')
-
-adjusted_network = adjust_weights(network,25)
 
 
 
-print(len(list(adjusted_network.edges)))
-d =[]
-l = []
+d_pre = []
+d_post = []
 for i in range(700):
 
-    path, ecpath, pct_cycle, length = random_shortest_path(adjusted_network,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix)
+    path_pre, ecpath_pre, pct_cycle_pre, length_pre = random_shortest_path(G_adj_pre,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix)
+    path_post, ecpath_post, pct_cycle_post, length_post = random_shortest_path(G_adj_post,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix)
 
-    if len(path) > 50:
-        d.append(pct_cycle)
-        l.append(len(path))
-        print(len(path))
+    if len(path_pre) > 50:
+        d_pre.append(pct_cycle_pre)
 
-print('mean = ',np.mean(l))
-
-fig1 = plt.figure()
-ax1 = fig1.add_subplot(111)
-
-ax1.hist(d,bins=25)
+    if len(path_post) > 50:
+        d_post.append(pct_cycle_post)
 
 
-plt.savefig('lpic_figs/uni_hist_bris_lsoa_o25.pdf')
-'''
-fig2 = plt.figure()
-ax2 = fig2.add_subplot(111)
 
-ax2.hist(l,bins=25)
-ax2.set_title('Number of edges in shortest paths between OD pairs',fontsize=18)
-ax2.set_xlabel('Length',fontsize=16)
-ax2.set_ylabel('Frequency',fontsize=16)
+
+my_dict = {'Pre': d_pre, 'Post': d_post}
+
+fig, ax = plt.subplots()
+ax.boxplot(my_dict.values())
+ax.set_xticklabels(my_dict.keys())
 plt.show()
-'''
+
+
+
+
+
+# fig1 = plt.figure()
+# ax1 = fig1.add_subplot(111)
+#
+# ax1.hist(d,bins=25)
+#
+#
+# #plt.savefig('lpic_figs/hist_lsoa_post_500_20_100.pdf')
+#
+# fig2 = plt.figure()
+# ax2 = fig2.add_subplot(111)
+#
+# ax2.hist(l,bins=25)
+# ax2.set_title('Number of edges in shortest paths between OD pairs',fontsize=18)
+# ax2.set_xlabel('Length',fontsize=16)
+# ax2.set_ylabel('Frequency',fontsize=16)
+# plt.show()

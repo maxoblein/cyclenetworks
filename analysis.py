@@ -24,7 +24,7 @@ def init_graph(filepath):
 def random_shortest_path(G,ODoption = 'random',Gbbox = None,ids = 0,centroids = 0,normed_matrix = 0):
     #Find a shortest path using a prescribed demaand model.
 
-    #print(nodes)
+    
     ODpair = getOD(G,ODoption,Gbbox, ids=ids, centroids=centroids, normed_matrix=normed_matrix)
 
     if nx.has_path(G,ODpair[0],ODpair[1]):

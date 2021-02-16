@@ -33,6 +33,7 @@ def getflows(adjusted,nodes,flowmat,ntrips,ids = 0, centroids = 0,normed_matrix 
         path, ecpath, pct_cycle, length = random_shortest_path(adjusted,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix)
         print('new path')
         flowmat = updatemat(path,nodes,flowmat)
+        print('calculated')
 
 
 
@@ -99,10 +100,10 @@ if __name__ == '__main__':
     #
     # plt.show()
 
-    batchsize = 100
+    batchsize = 500
     updated = []
 # test for a few batches
-    for batchno in range(20):
+    for batchno in range(5):
         print('new batch')
         adjusted,cycmat = adjust_weights(G_copy,25)
 
@@ -121,7 +122,7 @@ if __name__ == '__main__':
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
 
-    ox.io.save_graphml(G_next, filepath='Graphpostupgrade_500_20_100', gephi=False, encoding='utf-8')
+    ox.io.save_graphml(G_next, filepath='Graphpostupgrade_500_5_500', gephi=False, encoding='utf-8')
 
     end = timer()
 
