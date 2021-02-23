@@ -21,10 +21,10 @@ def init_graph(filepath):
     return [Gp, nodes, edges, Ag]
 
 
-def random_shortest_path(G,ODoption = 'random',Gbbox = None,ids = 0,centroids = 0,normed_matrix = 0):
+def random_shortest_path(G,ODoption = 'random',Gbbox = None,ids = 0,centroids = 0,normed_matrix = 0,G_true = 0):
     #Find a shortest path using a prescribed demaand model.
 
-    
+
     ODpair = getOD(G,ODoption,Gbbox, ids=ids, centroids=centroids, normed_matrix=normed_matrix)
 
     if nx.has_path(G,ODpair[0],ODpair[1]):
@@ -38,27 +38,32 @@ def random_shortest_path(G,ODoption = 'random',Gbbox = None,ids = 0,centroids = 
 
         ec = colour_edges(G)
 
-        edgelist = list(G.edges)
-        l = []
+        edgelist = list(G_true.edges)
+        l_cycle = []
+        l_all = []
         for e in pathedges:
             index = edgelist.index((e[0],e[1],0))
+            edgelength = G_true.edges[(e[0],e[1],0)]['length']
+            
 
             if ec[index] == 'r':
                 ec[index] = 0
                 ec[index] = 'b'
-                l.append(1)
+                l_cycle.append(edgelength)
+                l_all.append(edgelength)
             if ec[index] == 'w':
                 ec[index] = 0
                 ec[index] = 'g'
-                l.append(0)
+                l_all.append(edgelength)
 
 
 
 
-        if len(l) == 0:
+        if len(l_all) == 0:
             pct_cycle = 0
         else:
-            pct_cycle = (sum(l)/len(l))*100
+
+            pct_cycle = (sum(l_cycle)/sum(l_all))*100
 
         length = nx.shortest_path_length(G,ODpair[0],ODpair[1])
 
@@ -129,11 +134,12 @@ def colour_edges(G):
     return ec
 
 def adjust_weights(G,c):
+    G_copy = G.copy()
     edge_index = []
-    node_list = list(G.nodes)
+    node_list = list(G_copy.nodes)
     cycmat = np.zeros((len(node_list),len(node_list)))
     #identify index of non cycle lanes
-    for u,v,k,d in G.edges(keys=True, data=True):
+    for u,v,k,d in G_copy.edges(keys=True, data=True):
         bi = False
         if "bicycle" in d: #kind of uggly but not every edge has the bicycle tag
             if d['bicycle']=='designated':
@@ -152,7 +158,7 @@ def adjust_weights(G,c):
 
 
 
-    return G, cycmat
+    return G_copy, cycmat
 
 
 

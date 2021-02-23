@@ -5,35 +5,38 @@ from commutedata import *
 network_pre = ox.io.load_graphml('Graphall')
 network_post = ox.io.load_graphml('Graphpostupgrade_500_20_100')
 #centrenet = ox.io.load_graphml('Graphbriscentre')
-ids, centroids, normed_matrix = initialiselsoa()
-G_adj_pre,cycmat = adjust_weights(network_pre,25)
-G_adj_post, cycmat = adjust_weights(network_post,25)
+
+def compare_pct(G1,G2,filepath):
+    network_pre = G1
+    network_post = G2
+    ids, centroids, normed_matrix = initialiselsoa()
+    G_adj_pre,cycmat = adjust_weights(network_pre,25)
+    G_adj_post, cycmat = adjust_weights(network_post,25)
 
 
 
+    d_pre = []
+    d_post = []
+    for i in range(500):
+        print(i)
+        path_pre, ecpath_pre, pct_cycle_pre, length_pre = random_shortest_path(G_adj_pre,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = network_pre)
+        path_post, ecpath_post, pct_cycle_post, length_post = random_shortest_path(G_adj_post,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = network_post)
 
-d_pre = []
-d_post = []
-for i in range(700):
+        if len(path_pre) > 50:
+            d_pre.append(pct_cycle_pre)
 
-    path_pre, ecpath_pre, pct_cycle_pre, length_pre = random_shortest_path(G_adj_pre,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix)
-    path_post, ecpath_post, pct_cycle_post, length_post = random_shortest_path(G_adj_post,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix)
-
-    if len(path_pre) > 50:
-        d_pre.append(pct_cycle_pre)
-
-    if len(path_post) > 50:
-        d_post.append(pct_cycle_post)
-
+        if len(path_post) > 50:
+            d_post.append(pct_cycle_post)
 
 
+    data = [d_pre, d_post]
+    fig, ax = plt.subplots()
+    ax.boxplot(data)
 
-my_dict = {'Pre': d_pre, 'Post': d_post}
 
-fig, ax = plt.subplots()
-ax.boxplot(my_dict.values())
-ax.set_xticklabels(my_dict.keys())
-plt.show()
+    plt.savefig(filepath)
+
+
 
 
 

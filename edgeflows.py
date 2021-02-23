@@ -27,10 +27,10 @@ def updatemat(path,nodes,mat):
 
     return mat
 
-def getflows(adjusted,nodes,flowmat,ntrips,ids = 0, centroids = 0,normed_matrix = 0):
+def getflows(adjusted,nodes,flowmat,ntrips,ids = 0, centroids = 0,normed_matrix = 0,G_true=0):
     #loop for however many iterations to get flows
     for i in range(ntrips):
-        path, ecpath, pct_cycle, length = random_shortest_path(adjusted,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix)
+        path, ecpath, pct_cycle, length = random_shortest_path(adjusted,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = G_true)
         print('new path')
         flowmat = updatemat(path,nodes,flowmat)
         print('calculated')
@@ -77,6 +77,13 @@ def upgraderoads(G,flowmat,cycmat,updated,batchsize = 1,batchno=1):
 
     return G, updated
 
+def plot_lpic(G,ec,save = False,show = False,filepath = None):
+    fig, ax = ox.plot_graph(G, node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
+
+    if show == True:
+        plt.show()
+    if save == True:
+        plt.savefig(filepath)
 
 
 if __name__ == '__main__':
@@ -88,28 +95,19 @@ if __name__ == '__main__':
     print('no. cycle paths = ',ec.count('r'))
     print(len(ec))
 
-    # #for plotting highlighted graph
-    # fig, ax = ox.plot_graph(G_copy, node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
-    # ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
-    #
-    #
-    #
-    # red_patch = mpatches.Patch(color='red', label='Roads with cycle paths')
-    #
-    # ax.legend(handles=[red_patch])
-    #
-    # plt.show()
 
     batchsize = 500
     updated = []
 # test for a few batches
-    for batchno in range(5):
+    for batchno in range(4):
         print('new batch')
         adjusted,cycmat = adjust_weights(G_copy,25)
 
+
+
         ntrips=500 #the number of simulated trips to get flows
 
-        flowmat = getflows(adjusted,nodes,flowmat,ntrips, ids=ids, centroids=centroids, normed_matrix=normed_matrix)
+        flowmat = getflows(adjusted,nodes,flowmat,ntrips, ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = G_copy)
 
         G_next,updated = upgraderoads(G_copy,flowmat,cycmat,updated,batchsize,batchno+1)
 
@@ -122,20 +120,20 @@ if __name__ == '__main__':
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
 
-    ox.io.save_graphml(G_next, filepath='Graphpostupgrade_500_5_500', gephi=False, encoding='utf-8')
+    ox.io.save_graphml(G_next, filepath='Graphpostupgrade_500_4_500', gephi=False, encoding='utf-8')
 
     end = timer()
 
     print('update time = ',(end-start)/60)
 
-    #for plotting highlighted graph
-    fig, ax = ox.plot_graph(G_next, node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
-    ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
-
-
-
-    red_patch = mpatches.Patch(color='red', label='Roads with cycle paths')
-
-    ax.legend(handles=[red_patch])
-
-    plt.show()
+    # #for plotting highlighted graph
+    # fig, ax = ox.plot_graph(G_next, node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
+    # ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
+    #
+    #
+    #
+    # red_patch = mpatches.Patch(color='red', label='Roads with cycle paths')
+    #
+    # ax.legend(handles=[red_patch])
+    #
+    # plt.show()
