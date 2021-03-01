@@ -96,16 +96,16 @@ if __name__ == '__main__':
     print(len(ec))
 
 
-    batchsize = 500
+    batchsize = 1
     updated = []
 # test for a few batches
-    for batchno in range(4):
+    for batchno in range(500):
         print('new batch')
         adjusted,cycmat = adjust_weights(G_copy,25)
 
 
 
-        ntrips=500 #the number of simulated trips to get flows
+        ntrips=100 #the number of simulated trips to get flows
 
         flowmat = getflows(adjusted,nodes,flowmat,ntrips, ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = G_copy)
 
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
 
-    ox.io.save_graphml(G_next, filepath='Graphpostupgrade_500_4_500', gephi=False, encoding='utf-8')
+    ox.io.save_graphml(G_next, filepath='Graphpostupgrade_batch_1', gephi=False, encoding='utf-8')
 
     end = timer()
 
