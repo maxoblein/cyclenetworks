@@ -37,6 +37,24 @@ def compare_pct(G1,G2,filepath):
     plt.savefig(filepath)
 
 
+def get_pcts(filepath,N):
+    network_pre = ox.io.load_graphml(filepath)
+    ids, centroids, normed_matrix = initialiselsoa()
+    G_adj_pre,cycmat = adjust_weights(network_pre,25)
+    d_pre = []
+
+    for i in range(N):
+        print(i)
+        path_pre, ecpath_pre, pct_cycle_pre, length_pre = random_shortest_path(G_adj_pre,ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = network_pre)
+
+        if len(path_pre) > 50:
+            d_pre.append(pct_cycle_pre)
+
+    return d_pre
+
+
+
+
 
 
 

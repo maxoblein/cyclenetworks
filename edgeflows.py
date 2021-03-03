@@ -86,7 +86,9 @@ def plot_lpic(G,ec,save = False,show = False,filepath = None):
         plt.savefig(filepath)
 
 
-if __name__ == '__main__':
+def upgrade_network(E,Nt,B,w=25):
+
+    Nb = E/B
 
     start = timer()
     G_copy, nodes, flowmat, ids, centroids, normed_matrix = initflow()
@@ -96,16 +98,16 @@ if __name__ == '__main__':
     print(len(ec))
 
 
-    batchsize = 1
+    batchsize = Nb
     updated = []
 # test for a few batches
-    for batchno in range(500):
+    for batchno in range(B):
         print('new batch')
-        adjusted,cycmat = adjust_weights(G_copy,25)
+        adjusted,cycmat = adjust_weights(G_copy,w)
 
 
 
-        ntrips=100 #the number of simulated trips to get flows
+        ntrips=Nt #the number of simulated trips to get flows
 
         flowmat = getflows(adjusted,nodes,flowmat,ntrips, ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = G_copy)
 
@@ -120,7 +122,9 @@ if __name__ == '__main__':
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
 
-    ox.io.save_graphml(G_next, filepath='Graphpostupgrade_batch_1', gephi=False, encoding='utf-8')
+    outfile = 'Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)
+
+    ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
     end = timer()
 
