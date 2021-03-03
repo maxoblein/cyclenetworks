@@ -2,8 +2,8 @@ from analysis import *
 from commutedata import *
 #ox.utils.config(use_cache=True, log_console=True)
 
-network_pre = ox.io.load_graphml('Graphall')
-network_post = ox.io.load_graphml('Graphpostupgrade_500_20_100')
+network_pre = ox.io.load_graphml('Graphmls\Graphall')
+network_post = ox.io.load_graphml('Graphmls\Graphpostupgrade_500_20_100')
 #centrenet = ox.io.load_graphml('Graphbriscentre')
 
 def compare_pct(G1,G2,filepath):

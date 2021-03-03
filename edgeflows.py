@@ -5,7 +5,7 @@ from commutedata import *
 
 
 def initflow():
-    G = ox.io.load_graphml('Graphall')
+    G = ox.io.load_graphml('Graphmls\Graphall')
 
 
     nodes = list(G.nodes)
@@ -88,7 +88,7 @@ def plot_lpic(G,ec,save = False,show = False,filepath = None):
 
 def upgrade_network(E,Nt,B,w=25):
 
-    Nb = E/B
+    Nb = np.floor(E/B) 
 
     start = timer()
     G_copy, nodes, flowmat, ids, centroids, normed_matrix = initflow()
@@ -122,7 +122,7 @@ def upgrade_network(E,Nt,B,w=25):
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
 
-    outfile = 'Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)
+    outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)
 
     ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
