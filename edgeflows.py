@@ -86,9 +86,9 @@ def plot_lpic(G,ec,save = False,show = False,filepath = None):
         plt.savefig(filepath)
 
 
-def upgrade_network(E,Nt,B,w=25):
+def upgrade_network(E,Nt,B,w=25,savebatch = False):
 
-    Nb = np.floor(E/B) 
+    Nb = np.floor(E/B)
 
     start = timer()
     G_copy, nodes, flowmat, ids, centroids, normed_matrix = initflow()
@@ -96,7 +96,7 @@ def upgrade_network(E,Nt,B,w=25):
 
     print('no. cycle paths = ',ec.count('r'))
     print(len(ec))
-
+    outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B) + '_' + str(w)
 
     batchsize = Nb
     updated = []
@@ -113,6 +113,10 @@ def upgrade_network(E,Nt,B,w=25):
 
         G_next,updated = upgraderoads(G_copy,flowmat,cycmat,updated,batchsize,batchno+1)
 
+        if savebatch == True:
+            batchout = 'Graphmls/batches_1000_100_20_w15/batch_' + str(batchno)
+            ox.io.save_graphml(G_next, filepath=batchout , gephi=False, encoding='utf-8')
+
         G_copy = G_next
 
 
@@ -122,7 +126,7 @@ def upgrade_network(E,Nt,B,w=25):
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
 
-    outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)
+
 
     ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
