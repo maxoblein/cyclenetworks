@@ -126,7 +126,11 @@ def upgrade_network(E,Nt,B,w=25,savebatch = False):
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
 
+<<<<<<< HEAD
 
+=======
+    outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)+ '_' + str(w)
+>>>>>>> b918b66027ee4fdbc27239551bd6cca3d42376ea
 
     ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
