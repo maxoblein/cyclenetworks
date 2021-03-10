@@ -10,8 +10,8 @@ def compare_pct(G1,G2,filepath):
     network_pre = G1
     network_post = G2
     ids, centroids, normed_matrix = initialiselsoa()
-    G_adj_pre,cycmat = adjust_weights(network_pre,25)
-    G_adj_post, cycmat = adjust_weights(network_post,25)
+    G_adj_pre,cycmat = adjust_weights(network_pre,15)
+    G_adj_post, cycmat = adjust_weights(network_post,15)
 
 
 
@@ -31,7 +31,15 @@ def compare_pct(G1,G2,filepath):
 
     data = [d_pre, d_post]
     fig, ax = plt.subplots()
+
+
+
     ax.boxplot(data)
+
+    ind = np.arange(3)
+    ax.set_xticks(ind)
+    labels = [' ','2', '15']
+    ax.set_xticklabels(labels)
 
 
     plt.savefig(filepath)
