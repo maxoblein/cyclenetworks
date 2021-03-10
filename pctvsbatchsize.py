@@ -1,6 +1,6 @@
 #pct_iqr vs ratio batchsize to Ne
 
-from edgeflows import *
+from upgrade import *
 from analysis import *
 from distributions import *
 from scipy.stats import iqr

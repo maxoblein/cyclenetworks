@@ -128,11 +128,15 @@ def upgrade_network(E,Nt,B,w=25,savebatch = False):
 
     outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)+ '_' + str(w)
 
-    ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
+    #ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
     end = timer()
 
     print('update time = ',(end-start)/60)
+
+    print(flowmat)
+
+    return flowmat
 
     # #for plotting highlighted graph
     # fig, ax = ox.plot_graph(G_next, node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
