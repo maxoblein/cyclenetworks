@@ -44,7 +44,7 @@ def random_shortest_path(G,ODoption = 'random',Gbbox = None,ids = 0,centroids = 
         for e in pathedges:
             index = edgelist.index((e[0],e[1],0))
             edgelength = G_true.edges[(e[0],e[1],0)]['length']
-            
+
 
             if ec[index] == 'r':
                 ec[index] = 0
