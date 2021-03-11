@@ -1,6 +1,6 @@
 #script to plot graphs from graphml file for report
 
-from edgeflows import *
+from upgrade import *
 import sys
 from distributions import *
 

@@ -93,7 +93,7 @@ def getOD(G,ODoption,Gbbox,ids = 0,centroids = 0,normed_matrix = 0):
 
     if ODoption == 'lsoa':
         ODpair = lsoapair(G, ids, centroids, normed_matrix)
-
+        
     else:
         print('invalid ODoption')
         ODpair = [-1,-1]

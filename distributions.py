@@ -10,8 +10,8 @@ def compare_pct(G1,G2,filepath):
     network_pre = G1
     network_post = G2
     ids, centroids, normed_matrix = initialiselsoa()
-    G_adj_pre,cycmat = adjust_weights(network_pre,15)
-    G_adj_post, cycmat = adjust_weights(network_post,15)
+    G_adj_pre,cycmat = adjust_weights(network_pre,2)
+    G_adj_post, cycmat = adjust_weights(network_post,2)
 
 
 
@@ -38,10 +38,11 @@ def compare_pct(G1,G2,filepath):
 
     ind = np.arange(3)
     ax.set_xticks(ind)
-    labels = [' ','2', '15']
+    labels = [' ','random', 'heuristic']
     ax.set_xticklabels(labels)
 
-
+    print('mean pre = ',np.mean(data[0]))
+    print('mean post = ',np.mean(data[1]))
     plt.savefig(filepath)
 
 
