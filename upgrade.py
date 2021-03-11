@@ -86,7 +86,7 @@ def plot_lpic(G,ec,save = False,show = False,filepath = None):
         plt.savefig(filepath)
 
 
-def upgrade_network(E,Nt,B,w=2,savebatch = False):
+def upgrade_network(E,Nt,B,w=25,savebatch = False,save=True):
 
     Nb = np.floor(E/B)
 
@@ -125,10 +125,13 @@ def upgrade_network(E,Nt,B,w=2,savebatch = False):
 
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
+    if save == True:
+        outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)+ '_' + str(w)
 
-    outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)+ '_' + str(w)
+        ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
-    ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
+    
+
 
     end = timer()
 
