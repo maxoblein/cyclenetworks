@@ -86,7 +86,7 @@ def plot_lpic(G,ec,save = False,show = False,filepath = None):
         plt.savefig(filepath)
 
 
-def upgrade_network(E,Nt,B,w=25,savebatch = False):
+def upgrade_network(E,Nt,B,w=2,savebatch = False):
 
     Nb = np.floor(E/B)
 
@@ -126,15 +126,9 @@ def upgrade_network(E,Nt,B,w=25,savebatch = False):
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
 
-<<<<<<< HEAD:edgeflows.py
-
     outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)+ '_' + str(w)
 
-=======
-    outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)+ '_' + str(w)
->>>>>>> 146b522fb97a84f3629ed7723878a3ddf9ec85ee:upgrade.py
-
-    #ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
+    ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
     end = timer()
 
