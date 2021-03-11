@@ -9,13 +9,14 @@ E = 1000
 B = np.arange(2,22,2)
 Nt =100
 print(B)
+w = 5
 
 for b in B:
-    upgrade_network(E,Nt,b,w=25)
+    upgrade_network(E,Nt,b,w=w)
 
 data = []
 for b in B:
-    filename = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(b)
+    filename = 'Graphmls/Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(b) + '_' +str(w)
     data.append(get_pcts(filename,500))
 
 iqrs = []
