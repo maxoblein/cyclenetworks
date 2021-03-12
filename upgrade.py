@@ -86,7 +86,7 @@ def plot_lpic(G,ec,save = False,show = False,filepath = None):
         plt.savefig(filepath)
 
 
-def upgrade_network(E,Nt,B,w=25,savebatch = False,save=True):
+def upgrade_network(E,Nt,B,w=2,savebatch = False,save=True):
 
     Nb = np.floor(E/B)
 
@@ -114,7 +114,7 @@ def upgrade_network(E,Nt,B,w=25,savebatch = False,save=True):
         G_next,updated = upgraderoads(G_copy,flowmat,cycmat,updated,batchsize,batchno+1)
 
         if savebatch == True:
-            batchout = 'Graphmls/batches_1000_100_20_w15/batch_' + str(batchno)
+            batchout = 'Graphmls/batches_2000_w2/batch_' + str(batchno)
             ox.io.save_graphml(G_next, filepath=batchout , gephi=False, encoding='utf-8')
 
         G_copy = G_next

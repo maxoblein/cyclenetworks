@@ -5,25 +5,31 @@ from analysis import *
 from distributions import *
 from scipy.stats import iqr
 
-E = 1000
-B = np.arange(2,22,2)
+E = 2000
+B = np.arange(5,25,5)
 Nt =100
 print(B)
-w = 5
+w = 2
 
-for b in B:
-    upgrade_network(E,Nt,b,w=w)
+# for b in B:
+#     upgrade_network(E,Nt,b,w=w)
 
 data = []
 for b in B:
-    filename = 'Graphmls/Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(b) + '_' +str(w)
+    filename = 'Graphmls/Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(b) + '_' + str(w)
     data.append(get_pcts(filename,500))
 
-iqrs = []
-for d in data:
-    iqrs.append(iqr(d))
+fig, ax = plt.subplots()
 
-fig = plt.figure()
-ax = fig.add_subplot()
-ax.scatter(B,iqrs)
-plt.show()
+
+
+ax.boxplot(data)
+
+ind = np.arange(len(B)+1)
+ax.set_xticks(ind)
+labels = [' ']
+for label in B:
+    labels.append(str(label))
+ax.set_xticklabels(labels)
+
+plt.savefig('lpic_figs/cmp_var_b.pdf')

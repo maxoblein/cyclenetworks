@@ -93,7 +93,7 @@ def getOD(G,ODoption,Gbbox,ids = 0,centroids = 0,normed_matrix = 0):
 
     if ODoption == 'lsoa':
         ODpair = lsoapair(G, ids, centroids, normed_matrix)
-        
+
     else:
         print('invalid ODoption')
         ODpair = [-1,-1]
@@ -109,6 +109,22 @@ def commute_to_bbox(G,Gbbox):
     ODpair = [np.random.choice(origins,1)[0],  np.random.choice(destinations,1)[0]]
 
     return ODpair
+
+def plot_lsoa():
+    G = ox.io.load_graphml('Graphmls/Graphall')
+    ids, centroids, normed_matrix = initialiselsoa()
+    X = [coord[0] for coord in centroids]
+    Y = [coord[1] for coord in centroids]
+    X_ar = np.array(X)
+    Y_ar = np.array(Y)
+
+
+
+    centroid_nodes = ox.distance.get_nearest_nodes(G,X_ar,Y_ar,method = 'balltree')
+
+    nc = ['r' if node in centroid_nodes else 'w' for node in G.nodes()]
+
+    fig, ax = ox.plot_graph(G,node_size = 5, node_color = nc)
 
 
 def colour_edges(G):
