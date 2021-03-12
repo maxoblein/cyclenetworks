@@ -130,7 +130,7 @@ def upgrade_network(E,Nt,B,w=2,savebatch = False,save=True):
 
         ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
-    #ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
+    
 
 
     end = timer()
