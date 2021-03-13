@@ -6,18 +6,19 @@ from distributions import *
 from scipy.stats import iqr
 
 E = 2000
-B = np.arange(5,25,5)
+B = 20
 Nt =100
 print(B)
-w = 2
+W = [1,2,5,10]
+wd = 2
 
-# for b in B:
-#     upgrade_network(E,Nt,b,w=w)
+# for w in W:
+#     upgrade_network(E,Nt,B,w=w)
 
 data = []
-for b in B:
-    filename = 'Graphmls/Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(b) + '_' + str(w)
-    data.append(get_pcts(filename,500))
+for w in W:
+    filename = 'Graphmls/Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B) + '_' + str(wd)
+    data.append(get_pcts(filename,500,w))
 
 fig, ax = plt.subplots()
 
@@ -25,11 +26,11 @@ fig, ax = plt.subplots()
 
 ax.boxplot(data)
 
-ind = np.arange(len(B)+1)
+ind = np.arange(len(W)+1)
 ax.set_xticks(ind)
 labels = [' ']
-for label in B:
+for label in W:
     labels.append(str(label))
 ax.set_xticklabels(labels)
 
-plt.savefig('lpic_figs/cmp_var_b.pdf')
+plt.savefig('lpic_figs/cmp_var_wt.pdf')

@@ -68,6 +68,8 @@ def upgraderoads(G,flowmat,cycmat,updated,batchsize = 1,batchno=1):
 
         else:
             G.edges[(edges[j][0],edges[j][1],0)]['highway'] = 'cycleway'
+            #indicate the batch in which upgraded
+            G.edges[(edges[j][0],edges[j][1],0)]['batch'] = batchno
             cycmat[nodes.index(edges[j][0])][nodes.index(edges[j][1])] = batchno
             updated.append([G.edges[(edges[j][0],edges[j][1],0)],batchno])
             indicator = indicator + 1
@@ -97,6 +99,11 @@ def upgrade_network(E,Nt,B,w=2,savebatch = False,save=True):
     print('no. cycle paths = ',ec.count('r'))
     print(len(ec))
     outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B) + '_' + str(w)
+
+    #add batch tag to edges to track when upgraded
+
+    for u,v,k,d in G_copy.edges(keys=True,data=True):
+        d['batch'] = 0
 
     batchsize = Nb
     updated = []
@@ -130,7 +137,7 @@ def upgrade_network(E,Nt,B,w=2,savebatch = False,save=True):
 
         ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
-    
+
 
 
     end = timer()
@@ -139,7 +146,7 @@ def upgrade_network(E,Nt,B,w=2,savebatch = False,save=True):
 
     print(flowmat)
 
-    return flowmat
+    return G_next, flowmat
 
     # #for plotting highlighted graph
     # fig, ax = ox.plot_graph(G_next, node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)

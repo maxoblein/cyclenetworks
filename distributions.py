@@ -38,7 +38,7 @@ def compare_pct(G1,G2,filepath):
 
     ind = np.arange(3)
     ax.set_xticks(ind)
-    labels = [' ','random', 'heuristic']
+    labels = [' ','oneshot', 'single-edge']
     ax.set_xticklabels(labels)
 
     print('mean pre = ',np.mean(data[0]))
@@ -46,10 +46,10 @@ def compare_pct(G1,G2,filepath):
     plt.savefig(filepath)
 
 
-def get_pcts(filepath,N):
+def get_pcts(filepath,N,wt=2):
     network_pre = ox.io.load_graphml(filepath)
     ids, centroids, normed_matrix = initialiselsoa()
-    G_adj_pre,cycmat = adjust_weights(network_pre,25)
+    G_adj_pre,cycmat = adjust_weights(network_pre,wt)
     d_pre = []
 
     for i in range(N):
