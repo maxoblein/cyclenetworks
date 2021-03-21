@@ -80,25 +80,26 @@ def random_shortest_path(G,ODoption = 'random',Gbbox = None,ids = 0,centroids = 
 
 
 def getOD(G,ODoption,Gbbox,ids = 0,centroids = 0,normed_matrix = 0):
+    print(ODoption)
     # gets the od pair of the prescribed demand model
     if ODoption == 'random':
         nodes = G.nodes
         nodes = list(nodes)
         #print(nodes)
         ODpair = np.random.choice(nodes,2)
-
+        return ODpair
     if ODoption == 'centre':
         ODpair = commute_to_bbox(G,Gbbox)
         print(ODpair)
-
+        return ODpair
     if ODoption == 'lsoa':
         ODpair = lsoapair(G, ids, centroids, normed_matrix)
-
+        return ODpair
     else:
         print('invalid ODoption')
         ODpair = [-1,-1]
 
-    return ODpair
+        return ODpair
 
 def commute_to_bbox(G,Gbbox):
     allnodes = list(G.nodes)
@@ -176,7 +177,26 @@ def adjust_weights(G,c):
 
     return G_copy, cycmat
 
+def find_total_cycle_length(G):
+    length = 0
+    for u,v,k,d in G.edges(keys=True, data=True):
+        bi = False
+        if "bicycle" in d: #kind of uggly but not every edge has the bicycle tag
+            if d['bicycle']=='designated':
+                bi = True
 
+        if d['highway']=='cycleway':
+            length = length + d['length']
+
+
+        elif 'cycleway' in d:
+            length = length + d['length']
+        elif bi:
+            length = length + d['length']
+        else:
+            pass
+
+    return length
 
     #ec = ['r' if data['highway'] == 'cycleway' elif data['bicycle'] == 'designated' else 'w' for u, v, key, data in all[0].edges(keys=True, data=True)]
     #fig, ax = ox.plot_graph(all[0], node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7)

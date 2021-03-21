@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><osm version="0.6" generator="Overpass API 0.7.56.9 76e5016d">
+<note>The data included in this document is from www.openstreetmap.org. 
+The data is made available under ODbL.</note>
+<meta osm_base="2021-03-21T10:46:58Z"/>
+
+  <way id="2955682">
+    <nd ref="442725213"/>
+    <nd ref="3917460106"/>
+    <nd ref="13865038"/>
+    <tag k="bicycle" v="designated"/>
+    <tag k="designation" v="public_footpath"/>
+    <tag k="foot" v="designated"/>
+    <tag k="highway" v="cycleway"/>
+    <tag k="prow_ref" v="BC66/9"/>
+    <tag k="segregated" v="no"/>
+    <tag k="surface" v="asphalt"/>
+  </way>
+  <way id="2959339">
+    <nd ref="13914151"/>
+    <nd ref="1045973894"/>
+    <nd ref="1045973841"/>
+    <nd ref="1045973695"/>
+    <nd ref="13914149"/>
+    <nd ref="560109337"/>
+    <nd ref="613541403"/>
+    <nd ref="560109338"/>
+    <nd ref="1077037675"/>
+    <nd ref="2730704591"/>
+    <nd ref="13865044"/>
+    <tag k="bicycle" v="designated"/>
+    <tag k="designation" v="public_footpath"/>
+    <tag k="foot" v="designated"/>
+    <tag k="highway" v="cycleway"/>
+    <tag k="lit" v="no"/>
+    <tag k="prow_ref" v="BC65/3"/>
+    <tag k="segregated" v="no"/>
+    <tag k="surface" v="compacted"/>
+  </way>

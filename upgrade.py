@@ -88,7 +88,7 @@ def plot_lpic(G,ec,save = False,show = False,filepath = None):
         plt.savefig(filepath)
 
 
-def upgrade_network(E,Nt,B,w=2,savebatch = False,save=True):
+def upgrade_network(E,Nt,B,w=2,savebatch = False,save=False):
 
     Nb = np.floor(E/B)
 
@@ -148,14 +148,33 @@ def upgrade_network(E,Nt,B,w=2,savebatch = False,save=True):
 
     return G_next, flowmat
 
-    # #for plotting highlighted graph
-    # fig, ax = ox.plot_graph(G_next, node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,show = False)
-    # ax.set_title('Graph of road network in Bristol with cycle paths highlighted', fontsize = 18)
-    #
-    #
-    #
-    # red_patch = mpatches.Patch(color='red', label='Roads with cycle paths')
-    #
-    # ax.legend(handles=[red_patch])
-    #
-    # plt.show()
+def first_batch_edges():
+
+    G,flowmat = upgrade_network(2000,100,3)
+
+    nodelist = list(G.nodes)
+
+    first_batch_edges = [(u,v,k,d) for u,v,k,d in G.edges(keys=True, data=True) if d['batch']==1]
+
+    total_length = 0
+    names = []
+    flows = np.ones(len(first_batch_edges))
+    i = 0
+
+    for u,v,k,d in first_batch_edges:
+        if 'name' in d:
+            print(d['name'])
+            names.append(d['name'])
+        else:
+            names.append('no name')
+
+        flowindex = [nodelist.index(u),nodelist.index(v)]
+        flows[i] = flowmat[flowindex[0],flowindex[1]]
+        total_length = total_length + d['length']
+        i = i+1
+
+    print(total_length)
+    columns = ['Street name','Cycle Flow']
+    data = np.vstack((names,flows))
+    df = pd.DataFrame(data,columns = columns)
+    print(df.head())
