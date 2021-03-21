@@ -5,32 +5,34 @@ from analysis import *
 from distributions import *
 from scipy.stats import iqr
 
-E = 2000
-B = 20
+L = 160000
+B = [1,2,3,4,5,7,8,9,10,13,15,18,20]
 Nt =100
 print(B)
-W = [1,2,5,10]
+w = 2
 wd = 2
 
-# for w in W:
-#     upgrade_network(E,Nt,B,w=w)
+# for b in B:
+#      upgrade_network(L,Nt,b,w=w,save = True)
 
 data = []
-for w in W:
-    filename = 'Graphmls/Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B) + '_' + str(wd)
-    data.append(get_pcts(filename,500,w))
+for b in B:
+    filename = 'Graphmls/Graphpostupgrade' + '_' + str(L)+ '_' + str(Nt) + '_' + str(b) + '_' + str(wd)
+    G = ox.io.load_graphml(filename)
+
+    data.append(find_total_cycle_length(G))
 
 fig, ax = plt.subplots()
 
 
 
-ax.boxplot(data)
+ax.scatter(B,data)
 
-ind = np.arange(len(W)+1)
+ind = np.arange(21)
 ax.set_xticks(ind)
-labels = [' ']
-for label in W:
-    labels.append(str(label))
+labels = np.arange(21)
+# for label in B:
+#     labels.append(str(label))
 ax.set_xticklabels(labels)
 
-plt.savefig('lpic_figs/cmp_var_wt.pdf')
+plt.savefig('lpic_figs/scatter_totallen_nbatches.pdf')

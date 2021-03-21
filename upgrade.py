@@ -58,7 +58,7 @@ def upgraderoads(G,flowmat,cycmat,updated,batchsize = 1,batchno=1):
     indicator = 0
 
     j = 0
-    while indicator != batchsize:
+    while indicator <= batchsize:
 
 
         bi = False
@@ -72,7 +72,7 @@ def upgraderoads(G,flowmat,cycmat,updated,batchsize = 1,batchno=1):
             G.edges[(edges[j][0],edges[j][1],0)]['batch'] = batchno
             cycmat[nodes.index(edges[j][0])][nodes.index(edges[j][1])] = batchno
             updated.append([G.edges[(edges[j][0],edges[j][1],0)],batchno])
-            indicator = indicator + 1
+            indicator = indicator + G.edges[(edges[j][0],edges[j][1],0)]['length']
 
         j = j+1
 
@@ -88,9 +88,9 @@ def plot_lpic(G,ec,save = False,show = False,filepath = None):
         plt.savefig(filepath)
 
 
-def upgrade_network(E,Nt,B,w=2,savebatch = False,save=False):
+def upgrade_network(L,Nt,B,w=2,savebatch = False,save=False):
 
-    Nb = np.floor(E/B)
+    Nb = L/B
 
     start = timer()
     G_copy, nodes, flowmat, ids, centroids, normed_matrix = initflow()
@@ -98,7 +98,7 @@ def upgrade_network(E,Nt,B,w=2,savebatch = False,save=False):
 
     print('no. cycle paths = ',ec.count('r'))
     print(len(ec))
-    outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B) + '_' + str(w)
+    outfile = 'Graphmls\Graphpostupgrade' + '_' + str(L)+ '_' + str(Nt) + '_' + str(B) + '_' + str(w)
 
     #add batch tag to edges to track when upgraded
 
@@ -133,7 +133,7 @@ def upgrade_network(E,Nt,B,w=2,savebatch = False,save=False):
     print(updated)
     print('no. cycle paths = ',ec.count('r'))
     if save == True:
-        outfile = 'Graphmls\Graphpostupgrade' + '_' + str(E)+ '_' + str(Nt) + '_' + str(B)+ '_' + str(w)
+        outfile = 'Graphmls\Graphpostupgrade' + '_' + str(L)+ '_' + str(Nt) + '_' + str(B)+ '_' + str(w)
 
         ox.io.save_graphml(G_next, filepath=outfile, gephi=False, encoding='utf-8')
 
