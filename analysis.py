@@ -124,8 +124,9 @@ def plot_lsoa():
     centroid_nodes = ox.distance.get_nearest_nodes(G,X_ar,Y_ar,method = 'balltree')
 
     nc = ['r' if node in centroid_nodes else 'w' for node in G.nodes()]
+    ns = [40 if node in centroid_nodes else 5 for node in G.nodes()]
 
-    fig, ax = ox.plot_graph(G,node_size = 5, node_color = nc)
+    fig, ax = ox.plot_graph(G,node_size = ns, node_color = nc)
 
 
 def colour_edges(G):
@@ -218,6 +219,7 @@ def lsoapair(G,ids,centroids,m):
     ODpair = [nodeorigin,nodedestination]
 
     return ODpair
+
 
 
 if __name__ == '__main__':
