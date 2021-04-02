@@ -27,6 +27,16 @@ if __name__ == '__main__':
 
         compare_pct(G1,G2,filepath)
 
+    if sys.argv[1] == 'dist':
+        infile = sys.argv[2]
+        outfile = sys.argv[3]
+        omega = sys.argv[4]
+        print(type(omega))
+        omega = int(omega)
+        print(type(omega))
+        data = get_pcts(infile,500,wt=omega,return_lengths = False, plot = True, ODoption = 'random')
+
+
     # else:
     #     network_1 = ox.io.load_graphml('Graphmls/batches_2000_1000_20/batch_0')
     #     network_2 = ox.io.load_graphml('Graphmls/batches_2000_1000_20/batch_1')

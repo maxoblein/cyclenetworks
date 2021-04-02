@@ -46,7 +46,7 @@ def compare_pct(G1,G2,filepath):
     plt.savefig(filepath)
 
 
-def get_pcts(filepath,N,wt=2,return_lengths = False, plot = False):
+def get_pcts(filepath,N,wt=2,return_lengths = False, plot = False, ODoption = 'lsoa'):
     network_pre = ox.io.load_graphml(filepath)
     ids, centroids, normed_matrix = initialiselsoa()
     G_adj_pre,cycmat = adjust_weights(network_pre,wt)
@@ -55,7 +55,7 @@ def get_pcts(filepath,N,wt=2,return_lengths = False, plot = False):
 
     for i in range(N):
         print(i)
-        path_pre, ecpath_pre, pct_cycle_pre, length_pre = random_shortest_path(G_adj_pre, ODoption = 'lsoa', ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = network_pre)
+        path_pre, ecpath_pre, pct_cycle_pre, length_pre = random_shortest_path(G_adj_pre, ODoption = ODoption, ids=ids, centroids=centroids, normed_matrix=normed_matrix,G_true = network_pre)
         edge_lens = []
         for j in range(len(path_pre)-1):
             edge = [path_pre[j],path_pre[j+1]]
@@ -64,14 +64,15 @@ def get_pcts(filepath,N,wt=2,return_lengths = False, plot = False):
         path_len = sum(edge_lens)
 
         #collect data
-        d_pre.append(pct_cycle_pre)
-        lengths.append(path_len)
+        if len(path_pre) > 50:
+            d_pre.append(pct_cycle_pre)
+            lengths.append(path_len)
 
     if return_lengths == True:
         return d_pre,lengths
 
     if plot == True:
-        plt.hist(d_pre)
+        plt.hist(d_pre,bins=25)
         plt.show()
 
 
