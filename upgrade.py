@@ -182,16 +182,16 @@ def first_batch_edges():
 
 def colour_by_batch():
 
-    G_upgrade,flowmat = upgrade_network(160000,100,20)
+    G_upgrade,flowmat = upgrade_network(160000,25,20)
     ec = ox.plot.get_edge_colors_by_attr(G_upgrade,'batch')
 
     nodes,edges = ox.graph_to_gdfs(G_upgrade, nodes=True, edges=True)
     cmap = plt.cm.get_cmap('viridis')
     norm=plt.Normalize(vmin=edges['batch'].min(), vmax=edges['batch'].max())
     sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
-    sm.set_array([])
+    #sm.set_array([])
 
     fig, ax = ox.plot_graph(G_upgrade, node_size=0, edge_color=ec, edge_linewidth=0.5, edge_alpha=0.7,save=False, show=False, filepath = 'lpic_figs/coloured_by_batch.pdf',bgcolor='black')
-    #cb = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax, orientation='horizontal')
+    cb = fig.colorbar(sm, ax=ax, orientation='horizontal')
     plt.show()
-    fig.savefig('lpic_figs/coloured_by_batch.pdf')
+    #fig.savefig('lpic_figs/coloured_by_batch.pdf')

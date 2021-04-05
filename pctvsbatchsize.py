@@ -24,7 +24,7 @@ for b in B:
 
 fig, ax = plt.subplots()
 
-
+data = [x - 320000 for x in data]
 
 ax.scatter(B,data)
 
@@ -34,5 +34,6 @@ labels = np.arange(21)
 # for label in B:
 #     labels.append(str(label))
 ax.set_xticklabels(labels)
+ax.set_ylim(bottom=0)
 
 plt.savefig('lpic_figs/scatter_totallen_nbatches.pdf')
