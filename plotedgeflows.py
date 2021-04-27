@@ -31,7 +31,7 @@ sm.set_array([])
 
 ec = ox.plot.get_edge_colors_by_attr(G,'flow',cmap='viridis')
 
-fig, ax = ox.plot_graph(G, node_size=0, edge_color=ec, edge_linewidth=0.8, edge_alpha=0.7,save=False, show=False, filepath = 'lpic_figs/Graph_of_edgeflows.pdf',bgcolor='black')
-cb = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax, orientation='horizontal')
+fig, ax = ox.plot_graph(G, node_size=0, edge_color=ec, edge_linewidth=0.8, edge_alpha=0.7,save=False, show=False, filepath = 'lpic_figs/Graph_of_edgeflows.pdf',bgcolor='lightgray')
+cb = fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax, orientation='vertical')
 # cb.set_label('shortest_route_length_to_target', fontsize = 20)
 fig.savefig('lpic_figs/edgeflows_with-colourbar.pdf')
