@@ -183,7 +183,7 @@ def first_batch_edges():
 
 def colour_by_batch():
 
-    G_upgrade,flowmat = upgrade_network(160000,25,5)
+    G_upgrade,flowmat = upgrade_network(160000,100,20)
 
 
     # nodes,edges = ox.graph_to_gdfs(G_upgrade, nodes=True, edges=True)
@@ -192,7 +192,7 @@ def colour_by_batch():
     # sm = plt.cm.ScalarMappable(norm=norm, cmap=cmap)
     #sm.set_array([])
 
-    cmap = plt.cm.jet  # define the colormap
+    cmap = plt.cm.jet # define the colormap
     # extract all colors from the .jet map
     cmaplist = [cmap(i) for i in range(cmap.N)]
 
@@ -206,7 +206,8 @@ def colour_by_batch():
     bounds = np.linspace(0, 20, 21)
     norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
-    fig, ax = ox.plot_graph(G_upgrade, node_size=0, edge_color=ec, edge_linewidth=0.5, edge_alpha=0.7,save=False, show=False, filepath = 'lpic_figs/coloured_by_batch.pdf',bgcolor='lightgray')
-    cb = plb.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,spacing='proportional', ticks=bounds, boundaries=bounds, format='%1i')
+    fig, ax = ox.plot_graph(G_upgrade, node_size=0, edge_color=ec, edge_linewidth=1.5, edge_alpha=0.7,save=False, show=False, filepath = 'lpic_figs/coloured_by_batch.pdf',bgcolor='lightgray')
+    ax2 = fig.add_axes([0.9, 0.1, 0.03, 0.8])
+    cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap, norm=norm,spacing='proportional', ticks=bounds, boundaries=bounds, format='%1i')
     plt.show()
     #fig.savefig('lpic_figs/coloured_by_batch.pdf')

@@ -1,9 +1,11 @@
+
+
 %% set-up
 clear; close all; more off
-%beta=1.35; numNode=20;
-beta=1.45; numNode=30;
+beta=1.35; numNode=20;
+% beta=1.45; numNode=30;
 omega=2;
-lambda=inf; %shortest paths only
+lambda=2; %shortest paths only
 ODmatrix=ones(2,2);
 % * numNode=10, beta=1.0 - very stripped down networks - moving only just
 % beyond cross -  the majority are just 10,11 edges - NDP could be run.
@@ -14,13 +16,13 @@ for i=1:numIter
 [ALLlistEdge{i},ALLlengthEdge{i},ALLnumEdge(i),ALLx{i},ALLy{i},...
     ALLOnode{i},ALLDnode{i},ALLG{i},ALLnodePath{i},ALLedgePath{i}] = makeNetwork(numNode,beta);
 end
-figure; hist(ALLnumEdge,[1:50]);
+% figure; hist(ALLnumEdge,[1:50]);
 %% Plot what random samples look like
-figure; 
-i = randi(numIter);
-plot(ALLx{i}(ALLlistEdge{i})',ALLy{i}(ALLlistEdge{i})','r-')
-axis equal
-axis([-0.1 1.1 -0.1 1.1])
+% figure; 
+% i = randi(numIter);
+% plot(ALLx{i}(ALLlistEdge{i})',ALLy{i}(ALLlistEdge{i})','r-','Marker','.','MarkerSize',15)
+% axis equal
+% axis([-0.1 1.1 -0.1 1.1])
 %% Loop over the networks - extract each network in turn
 for i=1:numIter
     listEdge=ALLlistEdge{i}; lengthEdge=ALLlengthEdge{i}; numEdge=ALLnumEdge(i);
@@ -67,5 +69,7 @@ end
 %%
 % should use one omega, lambda for upgrading the network, and other
 % lambda and omega for measuring the network?
-mean(cycleProportionFlowWeighted1)/4
-mean(cycleProportionFlowWeighted2b)/4
+onebatchMeanFlowWeightedProportion = mean(cycleProportionFlowWeighted1)/4
+twobatchMeanFlowWeightedProportion = mean(cycleProportionFlowWeighted2b)/4
+onebatchMeanEffectiveLengthFlowWeighted = mean(effectiveLengthFlowWeighted1)/4
+twobatchMeanEffectiveLengthFlowWeighted = mean(effectiveLengthFlowWeighted2b)/4
